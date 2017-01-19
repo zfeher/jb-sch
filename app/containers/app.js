@@ -93,7 +93,27 @@ export let App = React.createClass({
   },
 
   handleCardClick(cardId) {
-    // TODO
-    console.log('card clicked', cardId)
-  }
+    // TODO max 2 cards can be flipped at a time
+    // TODO if the 2 cards are the same, remove them
+    // TODO if the 2 cards are different flip back
+
+    this.flipCard(cardId);
+  },
+
+  flipCard(cardId) {
+    let { tableData, tableSize } = this.state;
+
+    // card id is same as the index so it is safe to use it for modification of
+    //  the given card
+    tableData = R.compose(
+      R.splitEvery(tableSize),
+      R.adjust(
+        R.evolve({ flipped: R.not }),
+        cardId
+      ),
+      R.flatten,
+    )(tableData);
+
+    this.setState({ tableData });
+  },
 });
