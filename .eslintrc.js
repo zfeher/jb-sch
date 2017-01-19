@@ -78,7 +78,7 @@ module.exports = {
 
     // ES6
     'no-useless-rename': 'error',
-    'prefer-const': 'error',
+    // 'prefer-const': 'error',
     'prefer-rest-params': 'error',
     'prefer-spread': 'error',
     'prefer-template': 'error',
