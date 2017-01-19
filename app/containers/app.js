@@ -5,6 +5,8 @@ import { Table } from '../components';
 const MIN_TABLE_SIZE = 6;
 const MAX_TABLE_SIZE = 20;
 const SYMBOLS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+// TODO switch back to false
+const DEFAULT_FLIPPED = true;
 const DEFAULT_TABLE_SIZE = MIN_TABLE_SIZE;
 
 let getRandomTableData = size => {
@@ -16,7 +18,11 @@ let getRandomTableData = size => {
   return R.compose(
     R.splitEvery(size),
     R.zipWith(
-      (id, symbol) => ({ id, symbol }),
+      (id, symbol) => ({
+        id,
+        symbol,
+        flipped: DEFAULT_FLIPPED,
+      }),
       R.range(0, length),
     ),
     randomizeArr,

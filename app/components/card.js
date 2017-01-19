@@ -1,7 +1,8 @@
 import * as React from 'react';
 
 export function Card(props) {
-  const { id, symbol, length } = props;
+  let { id, symbol, flipped, length } = props;
+  let opacity = flipped ? 1 : 0;
 
   return (
     <div
@@ -21,6 +22,7 @@ export function Card(props) {
           textAlign: 'center',
           textTransform: 'uppercase',
           fontSize: length,
+          opacity,
         }}>
       {symbol}
     </div>
@@ -30,6 +32,7 @@ export function Card(props) {
 Card.propTypes = {
   id: React.PropTypes.number.isRequired,
   symbol: React.PropTypes.string.isRequired,
+  flipped: React.PropTypes.bool.isRequired,
   length: React.PropTypes.string.isRequired,
 };
 

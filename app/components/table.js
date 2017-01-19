@@ -26,7 +26,7 @@ export function Table(props) {
           padding: 0,
           border: '1px solid #555',
           display: 'inline-block',
-          backgroundColor: '#f00',
+          backgroundColor: '#fff',
         }}>
       {createRowNodes(size, data)}
     </div>
@@ -40,6 +40,7 @@ Table.propTypes = {
       React.PropTypes.shape({
         id: React.PropTypes.number.isRequired,
         symbol: React.PropTypes.string.isRequired,
+        flipped: React.PropTypes.bool.isRequired,
       })
     )
   ),

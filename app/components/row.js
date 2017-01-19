@@ -9,8 +9,9 @@ let createCardNode = cardData => {
     <Card
       key={card.id}
       id={card.id}
-      length={`calc(40vw / ${rowSize})`}
       symbol={card.symbol}
+      flipped={card.flipped}
+      length={`calc(40vw / ${rowSize})`}
     />
   );
 };
@@ -45,6 +46,7 @@ Row.propTypes = {
     React.PropTypes.shape({
       id: React.PropTypes.number.isRequired,
       symbol: React.PropTypes.string.isRequired,
+      flipped: React.PropTypes.bool.isRequired,
     })
   ),
 };
