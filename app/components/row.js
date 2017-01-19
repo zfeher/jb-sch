@@ -2,8 +2,8 @@ import * as React from 'react';
 import * as R from 'ramda';
 import { Card } from './card';
 
-const createCardNode = cardData => {
-  const { rowSize, card } = cardData;
+let createCardNode = cardData => {
+  let { rowSize, card } = cardData;
 
   return (
     <Card
@@ -15,7 +15,7 @@ const createCardNode = cardData => {
   );
 };
 
-const createCardNodes = (rowSize, cards) => (
+let createCardNodes = (rowSize, cards) => (
   R.compose(
     R.map(createCardNode),
     R.map(card => ({ rowSize, card }))
@@ -23,7 +23,7 @@ const createCardNodes = (rowSize, cards) => (
 );
 
 export function Row(props) {
-  const { size, cards } = props;
+  let { size, cards } = props;
 
   return (
     <div
