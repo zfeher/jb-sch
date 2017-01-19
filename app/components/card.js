@@ -6,7 +6,7 @@ const DEFAULT_FONT_SIZE = DEFAULT_LENGTH - 4;
 
 export function Card(props) {
   let { id, symbol, flipped, onClick } = props;
-  let opacity = flipped ? 1 : 0;
+  let opacity = flipped ? 1 : 0.2;
 
   return (
     <div
