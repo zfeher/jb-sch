@@ -3,7 +3,7 @@ import * as R from 'ramda';
 import { Card } from './card';
 
 let createCardNode = cardData => {
-  let { rowSize, card } = cardData;
+  let { card } = cardData;
 
   return (
     <Card
@@ -11,7 +11,6 @@ let createCardNode = cardData => {
       id={card.id}
       symbol={card.symbol}
       flipped={card.flipped}
-      length={`calc(40vw / ${rowSize})`}
     />
   );
 };

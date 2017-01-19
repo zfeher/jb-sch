@@ -1,7 +1,11 @@
 import * as React from 'react';
 
+const DEFAULT_LENGTH = 30;
+const DEFAULT_CARD_SIZE = DEFAULT_LENGTH * 1.5;
+const DEFAULT_FONT_SIZE = DEFAULT_LENGTH - 4;
+
 export function Card(props) {
-  let { id, symbol, flipped, length } = props;
+  let { id, symbol, flipped } = props;
   let opacity = flipped ? 1 : 0;
 
   return (
@@ -13,15 +17,15 @@ export function Card(props) {
           margin: 0,
           padding: 0,
           display: 'inline-block',
-          width: length,
-          height: length,
+          width: `${DEFAULT_CARD_SIZE}px`,
+          height: `${DEFAULT_CARD_SIZE}px`,
           backgroundColor: '#fff',
           border: '1px solid #555',
           verticalAlign: 'middle',
-          lineHeight: length,
+          lineHeight: `${DEFAULT_LENGTH}px`,
           textAlign: 'center',
           textTransform: 'uppercase',
-          fontSize: length,
+          fontSize: `${DEFAULT_FONT_SIZE}px`,
           opacity,
         }}>
       {symbol}
@@ -33,7 +37,6 @@ Card.propTypes = {
   id: React.PropTypes.number.isRequired,
   symbol: React.PropTypes.string.isRequired,
   flipped: React.PropTypes.bool.isRequired,
-  length: React.PropTypes.string.isRequired,
 };
 
 Card.defaultProps = {
