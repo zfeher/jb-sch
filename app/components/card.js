@@ -23,13 +23,20 @@ export function Card(props) {
           backgroundColor: '#fff',
           border: '1px solid #555',
           verticalAlign: 'middle',
-          lineHeight: `${DEFAULT_LENGTH}px`,
-          textAlign: 'center',
-          textTransform: 'uppercase',
-          fontSize: `${DEFAULT_FONT_SIZE}px`,
-          opacity,
         }}>
-      {symbol}
+      <p
+          style={{
+            boxSizing: 'border-box',
+            margin: 0,
+            padding: 0,
+            lineHeight: `${DEFAULT_LENGTH}px`,
+            textAlign: 'center',
+            textTransform: 'uppercase',
+            fontSize: `${DEFAULT_FONT_SIZE}px`,
+            opacity,
+          }}>
+        {symbol}
+      </p>
     </div>
   );
 }

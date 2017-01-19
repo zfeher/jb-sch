@@ -5,8 +5,7 @@ import { Table } from '../components';
 const MIN_TABLE_SIZE = 6;
 const MAX_TABLE_SIZE = 20;
 const SYMBOLS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-// TODO switch back to false
-const DEFAULT_FLIPPED = true;
+const DEFAULT_FLIPPED = false;
 const DEFAULT_TABLE_SIZE = MIN_TABLE_SIZE;
 
 let getRandomTableData = size => {
