@@ -77,7 +77,7 @@ export let App = React.createClass({
           className="app-container"
           style={{ margin: 0, padding: 0 }}>
 
-        <Table size={tableSize} data={tableData}
+        <Table size={tableSize} data={tableData} onCardClick={this.handleCardClick}
         />
 
       </div>
@@ -92,4 +92,9 @@ export let App = React.createClass({
       tableData: getRandomTableData(tableSize),
     };
   },
+
+  handleCardClick(cardId) {
+    // TODO
+    console.log('card clicked', cardId)
+  }
 });

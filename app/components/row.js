@@ -2,28 +2,31 @@ import * as React from 'react';
 import * as R from 'ramda';
 import { Card } from './card';
 
-let createCardNode = cardData => {
-  let { card } = cardData;
+let createCardNode = R.curry(
+  (onCardClick, cardData) => {
+    let { card } = cardData;
 
-  return (
-    <Card
-      key={card.id}
-      id={card.id}
-      symbol={card.symbol}
-      flipped={card.flipped}
-    />
-  );
-};
+    return (
+      <Card
+        key={card.id}
+        id={card.id}
+        symbol={card.symbol}
+        flipped={card.flipped}
+        onClick={onCardClick}
+      />
+    );
+  }
+);
 
-let createCardNodes = (rowSize, cards) => (
+let createCardNodes = (rowSize, cards, onCardClick) => (
   R.compose(
-    R.map(createCardNode),
+    R.map(createCardNode(onCardClick)),
     R.map(card => ({ rowSize, card }))
   )(cards)
 );
 
 export function Row(props) {
-  let { size, cards } = props;
+  let { size, cards, onCardClick } = props;
 
   return (
     <div
@@ -34,7 +37,7 @@ export function Row(props) {
           padding: 0,
           border: 'none',
         }}>
-      {createCardNodes(size, cards)}
+      {createCardNodes(size, cards, onCardClick)}
     </div>
   );
 }
@@ -48,4 +51,9 @@ Row.propTypes = {
       flipped: React.PropTypes.bool.isRequired,
     })
   ),
+  onCardClick: React.PropTypes.func,
+};
+
+Row.defaultProps = {
+  onCardClick: () => {},
 };

@@ -2,10 +2,10 @@ import * as React from 'react';
 import * as R from 'ramda';
 import { Row } from './row';
 
-let createRowNodes = (tableSize, tableData) => (
+let createRowNodes = (tableSize, tableData, onCardClick) => (
   R.compose(
     R.map(
-      rowData => <Row key={rowData.id} size={rowData.tableSize} cards={rowData.cards} />
+      rowData => <Row key={rowData.id} size={rowData.tableSize} cards={rowData.cards} onCardClick={onCardClick} />
     ),
     R.zipWith(
       (id, cards) => ({ id, cards, tableSize }),
@@ -15,7 +15,7 @@ let createRowNodes = (tableSize, tableData) => (
 );
 
 export function Table(props) {
-  let { size, data } = props;
+  let { size, data, onCardClick } = props;
 
   return (
     <div
@@ -28,7 +28,7 @@ export function Table(props) {
           display: 'inline-block',
           backgroundColor: '#fff',
         }}>
-      {createRowNodes(size, data)}
+      {createRowNodes(size, data, onCardClick)}
     </div>
   );
 }
@@ -44,4 +44,9 @@ Table.propTypes = {
       })
     )
   ),
+  onCardClick: React.PropTypes.func,
+};
+
+Table.defaultProps = {
+  onCardClick: () => {},
 };

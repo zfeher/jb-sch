@@ -5,12 +5,13 @@ const DEFAULT_CARD_SIZE = DEFAULT_LENGTH * 1.5;
 const DEFAULT_FONT_SIZE = DEFAULT_LENGTH - 4;
 
 export function Card(props) {
-  let { id, symbol, flipped } = props;
+  let { id, symbol, flipped, onClick } = props;
   let opacity = flipped ? 1 : 0;
 
   return (
     <div
         id={`card-${id}`}
+        onClick={() => onClick(id)}
         className="card-container"
         style={{
           boxSizing: 'border-box',
@@ -37,7 +38,9 @@ Card.propTypes = {
   id: React.PropTypes.number.isRequired,
   symbol: React.PropTypes.string.isRequired,
   flipped: React.PropTypes.bool.isRequired,
+  onClick: React.PropTypes.func,
 };
 
 Card.defaultProps = {
+  onClick: () => {},
 };
