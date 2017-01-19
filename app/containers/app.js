@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Card } from '../components';
+import { Row } from '../components';
 
 export default React.createClass({
   render() {
@@ -8,12 +8,8 @@ export default React.createClass({
           className="app-container"
           style={{ margin: 0, padding: 0 }}>
 
-          <Card
-            key={123} // card id
-            id={123} // card id
-            length={`calc(40vw / ${6})`} // deck size
-            symbol={'A'} // [A..T]uvwxyz
-          />
+        <Row size={6} cards={[{id: 0, symbol: 'AB'}, {id: 1, symbol: 'AC'}]}
+        />
 
       </div>
     );
