@@ -52,6 +52,13 @@ let createSymbols = length => {
   return symbols;
 };
 
+let getDefaultState = () => ({
+  tries: 0,
+  gameOver: false,
+  tableSize: DEFAULT_TABLE_SIZE,
+  cards: getRandomCards(DEFAULT_TABLE_SIZE),
+});
+
 let flipCard = R.evolve({ flipped: R.not });
 let matchCard = R.assoc('matched', true);
 let isFlipped = R.propEq('flipped', true);
@@ -73,8 +80,9 @@ let areCardsSame = R.eqProps('symbol');
 
 export let App = React.createClass({
   render() {
-    let { tableSize, cards } = this.state;
+    let { tableSize, cards, gameOver, tries } = this.state;
     let tableData = R.splitEvery(tableSize, cards);
+    let gameOverMsg = gameOver ? 'Game Over Buddy :)' : '';
 
     return (
       <div
@@ -86,17 +94,16 @@ export let App = React.createClass({
           data={tableData}
           onCardClick={this.handleCardClick}
         />
+
+        <p>tries: { tries }</p>
+        <p>{ gameOverMsg }</p>
+        <button onClick={this.handleResetClick}>Reset</button>
       </div>
     );
   },
 
   getInitialState() {
-    let tableSize = DEFAULT_TABLE_SIZE;
-
-    return {
-      tableSize,
-      cards: getRandomCards(tableSize),
-    };
+    return getDefaultState();
   },
 
   handleCardClick(cardId) {
@@ -121,16 +128,21 @@ export let App = React.createClass({
   },
 
   evaluate() {
-    // TODO
-    //  update game status
-
-    let { cards } = this.state;
+    let { cards, tries } = this.state;
     let [card1, card2] = R.filter(isFlippedNotMatched, cards);
 
     let mapCard = areCardsSame(card1, card2) ? matchCard : flipCard;
     cards = R.adjust(mapCard, card1.id, cards);
     cards = R.adjust(mapCard, card2.id, cards);
 
-    this.setState({ cards });
+    tries++;
+    let gameOver = R.all(isFlipped, cards);
+
+    this.setState({ cards, gameOver, tries });
   },
+
+  handleResetClick() {
+    this.setState(getDefaultState());
+  },
+
 });
