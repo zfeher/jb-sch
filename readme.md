@@ -8,7 +8,7 @@ npm install
 
 Start watch mode for easier development
 ```
-npm run watch
+npm run dev
 ```
 
 Do some development then you can instantly check your changes in the browser
