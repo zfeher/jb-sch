@@ -53,10 +53,11 @@ let createSymbols = length => {
 };
 
 let getDefaultState = () => ({
-  tries: 0,
-  gameOver: false,
   tableSize: DEFAULT_TABLE_SIZE,
   cards: getRandomCards(DEFAULT_TABLE_SIZE),
+  userCanPlay: true,
+  tries: 0,
+  gameOver: false,
 });
 
 let flipCard = R.evolve({ flipped: R.not });
@@ -107,12 +108,11 @@ export let App = React.createClass({
   },
 
   handleCardClick(cardId) {
-    let { cards } = this.state;
+    let { cards, userCanPlay } = this.state;
 
     // card id is same as the index so it is safe to use it to get the given card
     let card = cards[cardId];
-
-    if (canFlipCard(card)) {
+    if (userCanPlay && canFlipCard(card)) {
       this.flipCard(card);
     }
   },
@@ -121,11 +121,14 @@ export let App = React.createClass({
     let { cards } = this.state;
     cards = R.adjust(flipCard, card.id, cards);
 
-    let cb = areTwoCardsFlipped(cards) ?
+    let twoCardsFlipped = areTwoCardsFlipped(cards);
+    let userCanPlay = !twoCardsFlipped;
+
+    let cb = twoCardsFlipped ?
       () => this.waitAndEvaluate() :
       () => {};
 
-    this.setState({ cards }, cb);
+    this.setState({ cards, userCanPlay }, cb);
   },
 
   waitAndEvaluate() {
@@ -143,7 +146,12 @@ export let App = React.createClass({
     tries++;
     let gameOver = R.all(isFlipped, cards);
 
-    this.setState({ cards, gameOver, tries });
+    this.setState({
+      cards,
+      gameOver,
+      tries,
+      userCanPlay: !gameOver
+    });
   },
 
   handleResetClick() {
