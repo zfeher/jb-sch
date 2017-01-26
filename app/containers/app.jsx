@@ -6,6 +6,7 @@ import { randomizeArr } from '../common';
 const MIN_TABLE_SIZE = 6;
 const MAX_TABLE_SIZE = 20;
 const SYMBOLS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+const EVALUATE_DELAY = 500;
 const DEFAULT_FLIPPED = false;
 const DEFAULT_MATCHED = false;
 const DEFAULT_TABLE_SIZE = MIN_TABLE_SIZE;
@@ -58,6 +59,18 @@ let isMatched = R.propEq('matched', true);
 let isNotMatched = R.complement(isMatched);
 let isFlippedNotMatched = R.both(isFlipped, isNotMatched);
 
+let canFlipCard = R.both(
+  R.propEq('flipped', false),
+  R.propEq('matched', false)
+);
+
+let areTwoCardsFlipped = R.compose(
+  R.propEq('length', 2),
+  R.filter(isFlippedNotMatched),
+);
+
+let areCardsSame = R.eqProps('symbol');
+
 export let App = React.createClass({
   render() {
     let { tableSize, cards } = this.state;
@@ -89,34 +102,34 @@ export let App = React.createClass({
   handleCardClick(cardId) {
     let { cards } = this.state;
 
-    // card id is same as the index so it is safe to use it for modification of
-    //  the given card
-    cards = R.adjust(flipCard, cardId, cards);
+    // card id is same as the index so it is safe to use it to get the given card
+    let card = cards[cardId];
 
-    // TODO refact a bit
-    let flippedCards = R.filter(isFlippedNotMatched, cards);
-    if (flippedCards.length == 2) {
-      let card1 = R.head(flippedCards);
-      let card2 = R.last(flippedCards);
+    if (canFlipCard(card)) {
+      cards = R.adjust(flipCard, card.id, cards);
 
-      if (card1.symbol === card2.symbol) {
-        cards = R.compose(
-          R.reduce(
-            (cards, cardId) => R.adjust(matchCard, cardId, cards),
-            cards
-          ),
-          R.pluck('id'),
-        )(flippedCards);
-      } else {
-        cards = R.compose(
-          R.reduce(
-            (cards, cardId) => R.adjust(flipCard, cardId, cards),
-            cards
-          ),
-          R.pluck('id'),
-        )(flippedCards);
-      }
+      let cb = areTwoCardsFlipped(cards) ?
+        () => this.waitAndEvaluate() :
+        () => {};
+
+      this.setState({ cards }, cb);
     }
+  },
+
+  waitAndEvaluate() {
+    setTimeout(() => this.evaluate(), EVALUATE_DELAY);
+  },
+
+  evaluate() {
+    // TODO
+    //  update game status
+
+    let { cards } = this.state;
+    let [card1, card2] = R.filter(isFlippedNotMatched, cards);
+
+    let mapCard = areCardsSame(card1, card2) ? matchCard : flipCard;
+    cards = R.adjust(mapCard, card1.id, cards);
+    cards = R.adjust(mapCard, card2.id, cards);
 
     this.setState({ cards });
   },
