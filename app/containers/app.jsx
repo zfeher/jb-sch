@@ -113,14 +113,19 @@ export let App = React.createClass({
     let card = cards[cardId];
 
     if (canFlipCard(card)) {
-      cards = R.adjust(flipCard, card.id, cards);
-
-      let cb = areTwoCardsFlipped(cards) ?
-        () => this.waitAndEvaluate() :
-        () => {};
-
-      this.setState({ cards }, cb);
+      this.flipCard(card);
     }
+  },
+
+  flipCard(card) {
+    let { cards } = this.state;
+    cards = R.adjust(flipCard, card.id, cards);
+
+    let cb = areTwoCardsFlipped(cards) ?
+      () => this.waitAndEvaluate() :
+      () => {};
+
+    this.setState({ cards }, cb);
   },
 
   waitAndEvaluate() {
