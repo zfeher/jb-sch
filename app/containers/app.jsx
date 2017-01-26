@@ -31,25 +31,25 @@ let getRandomCards = size => {
   )(pairs);
 };
 
-// TODO to FP style
 let createSymbols = length => {
-  let symbols = [];
-  let num = 0;
-  let i = 0;
-
-  while (i < SYMBOLS.length) {
-    let first = SYMBOLS[i];
-    let j = 0;
-    while (num < length && j < SYMBOLS.length) {
-      let second = SYMBOLS[j];
-      symbols.push(`${first}${second}`);
-      num++;
-      j++;
+  let loop = (length, res, ind1, ind2) => {
+    if (length === 0) {
+      return res;
     }
-    i++;
-  }
 
-  return symbols;
+    if (ind2 >= SYMBOLS.length) {
+      ind1++;
+      ind2 = 0;
+    }
+
+    let first = SYMBOLS[ind1];
+    let second = SYMBOLS[ind2];
+    res.push(`${first}${second}`);
+
+    return loop(length - 1, res, ind1, ind2 + 1);
+  };
+
+  return loop(length, [], 0, 0);
 };
 
 let getDefaultState = () => ({
