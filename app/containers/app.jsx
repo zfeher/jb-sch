@@ -10,14 +10,13 @@ const DEFAULT_FLIPPED = false;
 const DEFAULT_MATCHED = false;
 const DEFAULT_TABLE_SIZE = MIN_TABLE_SIZE;
 
-let getRandomTableData = size => {
+let getRandomCards = size => {
   let length = size * size;
   let halfLength = Math.floor(length / 2);
   let symbols = createSymbols(halfLength);
   let pairs = symbols.concat(symbols);
 
   return R.compose(
-    R.splitEvery(size),
     R.zipWith(
       (id, symbol) => ({
         id,
@@ -61,16 +60,19 @@ let isFlippedNotMatched = R.both(isFlipped, isNotMatched);
 
 export let App = React.createClass({
   render() {
-    let { tableSize, tableData } = this.state;
+    let { tableSize, cards } = this.state;
+    let tableData = R.splitEvery(tableSize, cards);
 
     return (
       <div
           className="app-container"
           style={{ margin: 0, padding: 0 }}>
 
-        <Table size={tableSize} data={tableData} onCardClick={this.handleCardClick}
+        <Table
+          size={tableSize}
+          data={tableData}
+          onCardClick={this.handleCardClick}
         />
-
       </div>
     );
   },
@@ -80,21 +82,12 @@ export let App = React.createClass({
 
     return {
       tableSize,
-      tableData: getRandomTableData(tableSize),
+      cards: getRandomCards(tableSize),
     };
   },
 
   handleCardClick(cardId) {
-    // TODO max 2 cards can be flipped at a time
-    // TODO if the 2 cards are the same, remove them
-    // TODO if the 2 cards are different flip back
-    // TODO don't flip already matched card :)
-    // TODO delayed flip check
-    //  - plus protection against newer flips until eval
-    // TODO game over check
-
-    let { tableData, tableSize } = this.state;
-    let cards = R.flatten(tableData);
+    let { cards } = this.state;
 
     // card id is same as the index so it is safe to use it for modification of
     //  the given card
@@ -125,7 +118,6 @@ export let App = React.createClass({
       }
     }
 
-    tableData = R.splitEvery(tableSize, cards);
-    this.setState({ tableData });
+    this.setState({ cards });
   },
 });
