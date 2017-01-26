@@ -25,20 +25,19 @@ module.exports = {
   devtool: 'source-map',
 
   resolve: {
-    extensions: ['', '.webpack.js', '.web.js', '.js']
+    extensions: ['', '.webpack.js', '.web.js', '.js', '.jsx']
   },
 
   module: {
     loaders: [
       {
-        test: /\.js$/,
+        test: /\.js$|\.jsx$/,
+        // test: [/\.js$/, /\.jsx$/],
+        // test: /(?:\.js$)|(?:\.jsx$)/,
         loader: 'babel',
+        exclude: /node_modules/,
       },
     ],
-
-    preLoaders: [
-      { test: /\.js$/, loader: 'source-map-loader' }
-    ]
   },
 
   // When importing a module whose path matches one of the following, just
