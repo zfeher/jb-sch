@@ -4,9 +4,8 @@ const DEFAULT_LENGTH = 30;
 const DEFAULT_CARD_SIZE = DEFAULT_LENGTH * 1.5;
 const DEFAULT_FONT_SIZE = DEFAULT_LENGTH - 4;
 
-export function Card(props) {
-  let { id, symbol, flipped, onClick } = props;
-  let opacity = flipped ? 1 : 0.2;
+export let Card = props => {
+  let { id, symbol, onClick, opacity } = props;
 
   return (
     <div
@@ -39,15 +38,16 @@ export function Card(props) {
       </p>
     </div>
   );
-}
+};
 
 Card.propTypes = {
   id: React.PropTypes.number.isRequired,
   symbol: React.PropTypes.string.isRequired,
-  flipped: React.PropTypes.bool.isRequired,
+  opacity: React.PropTypes.number,
   onClick: React.PropTypes.func,
 };
 
 Card.defaultProps = {
   onClick: () => {},
+  opacity: 1,
 };

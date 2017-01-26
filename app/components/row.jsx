@@ -3,30 +3,31 @@ import * as R from 'ramda';
 import { Card } from './card';
 
 let createCardNode = R.curry(
-  (onCardClick, cardData) => {
+  (onCardClick, showHints, cardData) => {
     let { card } = cardData;
+    let opacity = card.flipped ? 1 : (showHints ? 0.2 : 0);
 
     return (
       <Card
         key={card.id}
         id={card.id}
         symbol={card.symbol}
-        flipped={card.flipped}
         onClick={onCardClick}
+        opacity={opacity}
       />
     );
   }
 );
 
-let createCardNodes = (rowSize, cards, onCardClick) => (
+let createCardNodes = (rowSize, cards, onCardClick, showHints) => (
   R.compose(
-    R.map(createCardNode(onCardClick)),
+    R.map(createCardNode(onCardClick, showHints)),
     R.map(card => ({ rowSize, card }))
   )(cards)
 );
 
-export function Row(props) {
-  let { size, cards, onCardClick } = props;
+export let Row = props => {
+  let { size, cards, onCardClick, showHints } = props;
 
   return (
     <div
@@ -37,13 +38,14 @@ export function Row(props) {
           padding: 0,
           border: 'none',
         }}>
-      {createCardNodes(size, cards, onCardClick)}
+      {createCardNodes(size, cards, onCardClick, showHints)}
     </div>
   );
-}
+};
 
 Row.propTypes = {
   size: React.PropTypes.number.isRequired,
+  showHints: React.PropTypes.bool,
   cards: React.PropTypes.arrayOf(
     React.PropTypes.shape({
       id: React.PropTypes.number.isRequired,
@@ -56,4 +58,5 @@ Row.propTypes = {
 
 Row.defaultProps = {
   onCardClick: () => {},
+  showHints: false,
 };

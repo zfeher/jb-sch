@@ -2,10 +2,18 @@ import * as React from 'react';
 import * as R from 'ramda';
 import { Row } from './row';
 
-let createRowNodes = (tableSize, tableData, onCardClick) => (
+let createRowNodes = (tableSize, tableData, onCardClick, showHints) => (
   R.compose(
     R.map(
-      rowData => <Row key={rowData.id} size={rowData.tableSize} cards={rowData.cards} onCardClick={onCardClick} />
+      rowData => (
+        <Row
+          key={rowData.id}
+          size={rowData.tableSize}
+          cards={rowData.cards}
+          onCardClick={onCardClick}
+          showHints={showHints}
+        />
+      )
     ),
     R.zipWith(
       (id, cards) => ({ id, cards, tableSize }),
@@ -14,8 +22,8 @@ let createRowNodes = (tableSize, tableData, onCardClick) => (
   )(tableData)
 );
 
-export function Table(props) {
-  let { size, data, onCardClick } = props;
+export let Table = props => {
+  let { size, data, onCardClick, showHints } = props;
 
   return (
     <div
@@ -28,13 +36,14 @@ export function Table(props) {
           display: 'inline-block',
           backgroundColor: '#fff',
         }}>
-      {createRowNodes(size, data, onCardClick)}
+      {createRowNodes(size, data, onCardClick, showHints)}
     </div>
   );
-}
+};
 
 Table.propTypes = {
   size: React.PropTypes.number.isRequired,
+  showHints: React.PropTypes.bool,
   data: React.PropTypes.arrayOf(
     React.PropTypes.arrayOf(
       React.PropTypes.shape({
@@ -49,4 +58,5 @@ Table.propTypes = {
 
 Table.defaultProps = {
   onCardClick: () => {},
+  showHints: false,
 };

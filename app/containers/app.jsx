@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as R from 'ramda';
-import { Table } from '../components';
+import { Table, CheckBox } from '../components';
 import { randomizeArr } from '../common';
 
 const MIN_TABLE_SIZE = 6;
@@ -56,6 +56,7 @@ let getDefaultState = () => ({
   tableSize: DEFAULT_TABLE_SIZE,
   cards: getRandomCards(DEFAULT_TABLE_SIZE),
   userCanPlay: true,
+  wantHints: false,
   tries: 0,
   gameOver: false,
 });
@@ -81,7 +82,7 @@ let areCardsSame = R.eqProps('symbol');
 
 export let App = React.createClass({
   render() {
-    let { tableSize, cards, gameOver, tries } = this.state;
+    let { tableSize, cards, gameOver, tries, wantHints } = this.state;
     let tableData = R.splitEvery(tableSize, cards);
     let gameOverMsg = gameOver ? 'Game Over Buddy :)' : '';
 
@@ -91,13 +92,23 @@ export let App = React.createClass({
           style={{ margin: 0, padding: 0 }}>
 
         <Table
+          onCardClick={this.handleCardClick}
           size={tableSize}
           data={tableData}
-          onCardClick={this.handleCardClick}
+          showHints={wantHints}
         />
 
         <p>tries: { tries }</p>
+
+        <CheckBox
+          id="hints"
+          onClick={this.handleHintsClick}
+          label="need some hint"
+          checked={wantHints}
+        />
+
         <p>{ gameOverMsg }</p>
+
         <button onClick={this.handleResetClick}>Reset</button>
       </div>
     );
@@ -156,6 +167,11 @@ export let App = React.createClass({
 
   handleResetClick() {
     this.setState(getDefaultState());
+  },
+
+  handleHintsClick() {
+    let { wantHints } = this.state;
+    this.setState({ wantHints: !wantHints });
   },
 
 });
