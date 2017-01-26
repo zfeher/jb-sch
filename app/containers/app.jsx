@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as R from 'ramda';
 import { Table } from '../components';
+import { randomizeArr } from '../common';
 
 const MIN_TABLE_SIZE = 6;
 const MAX_TABLE_SIZE = 20;
@@ -29,24 +30,6 @@ let getRandomTableData = size => {
     randomizeArr,
   )(pairs);
 };
-
-// TODO to common.js
-let randomizeArr = arr => (
-  R.compose(
-    R.pluck('item'),
-    R.sortBy(R.prop('num')),
-    R.zipWith(
-      (num, item) => ({ num, item }),
-      randomNumbers(arr.length),
-    )
-  )(arr)
-);
-
-// TODO to common.js
-let randomNumbers = R.compose(
-    R.map(() => Math.random()),
-    R.range(0)
-);
 
 // TODO to FP style
 let createSymbols = length => {
